@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Um Presente Especial Para Você ✨</title>
+    
+    <style>
+        /* Configurações Globais */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fefae0, #e9edc9);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            color: #333d29;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 650px;
+            width: 90%;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            backdrop-filter: blur(8px);
+            margin: 20px;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        /* Regra que esconde as telas - muito importante estar com um 'c' só */
+        .oculto { display: none !important; }
+
+        button {
+            background-color: #606c38;
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(96, 108, 56, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 100;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            background-color: #283618;
+        }
+
+        /* Mecânica do Jardim */
+        .jardim-area {
+            margin: 50px 0;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .vaso-container {
+            font-size: 5rem;
+            margin-top: 30px;
+            position: relative;
+            height: 180px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        #chuva-regador {
+            font-size: 1.8rem;
+            animation: caindoAgua 0.6s infinite linear;
+            position: absolute;
+            top: -50px;
+            opacity: 0;
+            z-index: 5;
+        }
+
+        .estagio-semente { transform: scale(1); transition: all 0.5s ease; }
+        .estagio-broto { transform: scale(1.4); transition: all 0.5s ease; }
+        .estagio-crescimento { transform: scale(1.8); transition: all 0.5s ease; }
+        .estagio-quase { transform: scale(2.2); transition: all 0.5s ease; }
+        .estagio-Florecer { transform: scale(2.6); transition: all 0.5s ease; }
+        .estagio-Final { transform: scale(3.0); transition: all 0.5s ease; }
+
+        /* ESTRUTURA DA FLOR GEOMÉTRICA PERFEITA */
+        .flor-aberta-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 60px 0;
+            height: 300px; 
+        }
+
+        .flor-aberta {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .miolo {
+            position: absolute;
+            width: 110px;
+            height: 110px;
+            background: #fdda24;
+            border-radius: 50%;
+            z-index: 50; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #333;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            text-align: center;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+
+        .petala {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: #ffb5a7;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 0.85rem;
+            transition: background 0.4s ease, transform 0.4s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            z-index: 10;
+            text-align: center;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+
+        .p1 { transform: rotate(0deg) translate(95px) rotate(0deg); }
+        .p2 { transform: rotate(60deg) translate(95px) rotate(-60deg); }
+        .p3 { transform: rotate(120deg) translate(95px) rotate(-120deg); }
+        .p4 { transform: rotate(180deg) translate(95px) rotate(-180deg); }
+        .p5 { transform: rotate(240deg) translate(95px) rotate(-240deg); }
+        .p6 { transform: rotate(300deg) translate(95px) rotate(-300deg); }
+
+        .petala.revelada {
+            background: #ff7096;
+            color: #fff;
+            box-shadow: 0 6px 15px rgba(255, 112, 150, 0.4);
+        }
+        
+        .p1.revelada { transform: rotate(0deg) translate(95px) rotate(0deg) scale(1.08); }
+        .p2.revelada { transform: rotate(60deg) translate(95px) rotate(-60deg) scale(1.08); }
+        .p3.revelada { transform: rotate(120deg) translate(95px) rotate(-120deg) scale(1.08); }
+        .p4.revelada { transform: rotate(180deg) translate(95px) rotate(-180deg) scale(1.08); }
+        .p5.revelada { transform: rotate(240deg) translate(95px) rotate(-240deg) scale(1.08); }
+        .p6.revelada { transform: rotate(300deg) translate(95px) rotate(-300deg) scale(1.08); }
+
+        /* Galeria e Outros Elementos */
+        .titulo-animado { color: #ff477e; font-size: 2.8rem; animation: pulsar 2s infinite; }
+        .mensagem-final { font-size: 1.2rem; line-height: 1.8; margin: 30px 0; }
+        .galeria { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-top: 40px; }
+        .foto-card { background: white; padding: 12px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); }
+        .foto-card img { width: 100%; height: 230px; object-fit: cover; border-radius: 10px; }
+
+        /* Animações */
+        @keyframes caindoAgua {
+            0% { top: -50px; opacity: 0; }
+            30% { opacity: 1; }
+            100% { top: 30px; opacity: 0; }
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulsar { 0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); } }
+
+        #container-flores { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; }
+        .flor-decorativa { position: absolute; animation: cair linear forwards; }
+        @keyframes cair { 0% { transform: translateY(-50px) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(360deg); opacity: 0; } }
+    </style>
+</head>
+<body>
+
+    <audio id="musica-fundo" loop>
+        <source src="musica.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="tela-inicial" class="container">
+        <h1>Olá, Morena de cascais! 🌸</h1>
+        <p>Preparei algo único para você. Antes de começar, aumente o som do seu dispositivo.</p>
+        <button id="btn-iniciar" onclick="iniciarExperiencia()">Entrar no Jardim 🎵</button>
+    </div>
+
+    <div id="tela-jardim" class="container oculto">
+        <h2>Regue a planta para fazer a mágica acontecer... 💧</h2>
+        <p>Clique no regador para dar vida à sua surpresa!</p>
+        
+        <div class="jardim-area">
+            <button id="btn-regador" onclick="regarPlanta()">Clique Aqui para Regar 💧</button>
+            <div class="vaso-container">
+                <div id="chuva-regador">💧<br>💧<br>💧</div>
+                <div id="flor-crescendo" class="estagio-semente">🌱</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="tela-final" class="container oculto">
+        <h1 class="titulo-animado">✨ Você Floresceu! ✨</h1>
+        <h2>A Feliz Aniversario!💖Boneca </h2>
+        
+        <div class="flor-aberta-wrapper">
+            <div class="flor-aberta">
+                <div class="miolo">Clique nas<br>pétalas! 🌸</div>
+                
+                <div class="petala p1" onclick="revelarPalavra(this, 'Incrível! 🌟')">?</div>
+                <div class="petala p2" onclick="revelarPalavra(this, 'Maravilhosa! 💖')">?</div>
+                <div class="petala p3" onclick="revelarPalavra(this, 'Inteligente! 🧠')">?</div>
+                <div class="petala p4" onclick="revelarPalavra(this, 'Luminosa! ✨')">?</div>
+                <div class="petala p5" onclick="revelarPalavra(this, 'Única! 💎')">?</div>
+                <div class="petala p6" onclick="revelarPalavra(this, 'Especial! 🌹')">?</div>
+            </div>
+        </div>
+
+        <div class="mensagem-final">
+            <p>À medida que esta flor cresceu, lembrei-me de como é lindo ver você evoluir e brilhar todos os dias. Você merece o mundo!</p>
+        </div>
+
+        <h2>A Estrela do Dia 🌟</h2>
+        <div class="galeria">
+            <div class="foto-card">
+                <img src="ela1.jpg" alt="Foto dela 1">
+                <p>Radiante ✨</p>
+            </div>
+            <div class="foto-card">
+                <img src="ela2.jpg" alt="Foto dela 2">
+                <p>Perfeita! 👑</p>
+            </div>
+            <div class="foto-card">
+                <img src="ela3.jpg" alt="Foto dela 3">
+                <p>Incomparável ❤️</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="container-flores"></div>
+
+    <script>
+        let cliquesNoRegador = 0;
+
+        function iniciarExperiencia() {
+            const musica = document.getElementById('musica-fundo');
+            musica.play().catch(e => console.log("Áudio aguardando interação."));
+
+            // Esconde a tela inicial e mostra APENAS a tela do jardim
+            document.getElementById('tela-inicial').classList.add('oculto');
+            document.getElementById('tela-jardim').classList.remove('oculto');
+        }
+
+        function regarPlanta() {
+            cliquesNoRegador++;
+            const chuva = document.getElementById('chuva-regador');
+            const planta = document.getElementById('flor-crescendo');
+
+            chuva.style.opacity = '1';
+            setTimeout(() => { chuva.style.opacity = '0'; }, 600);
+
+            if (cliquesNoRegador === 1) {
+                planta.innerText = "🌰";
+                planta.className = "estagio-broto";
+            } else if (cliquesNoRegador === 2) {
+                planta.innerText = "🌱";
+                planta.className = "estagio-crescimento";
+            } else if (cliquesNoRegador === 3) {
+                planta.innerText = "🌿";
+                planta.className = "estagio-quase";
+            } else if (cliquesNoRegador === 4) {
+                planta.innerText = "🌷";
+                planta.className = "estagio-Florecer";
+            } else if (cliquesNoRegador === 5) {
+                planta.innerText = "🌸";
+                planta.className = "estagio-Final";
+                
+                // Só agora esconde o jardim e revela a tela final das fotos
+                setTimeout(() => {
+                    document.getElementById('tela-jardim').classList.add('oculto');
+                    document.getElementById('tela-final').classList.remove('oculto');
+                    fazerChoverFlores();
+                }, 1200);
+            }
+        }
+
+        function revelarPalavra(elemento, palavra) {
+            if (!elemento.classList.contains('revelada')) {
+                elemento.innerHTML = palavra.replace(' ', '<br>'); 
+                elemento.classList.add('revelada');
+            }
+        }
+
+        function fazerChoverFlores() {
+            const container = document.getElementById('container-flores');
+            const emojis = ['🌸', '🌹', '✨', '💖', '🌷', '🌺'];
+
+            setInterval(() => {
+                const flor = document.createElement('div');
+                flor.classList.add('flor-decorativa');
+                flor.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                flor.style.left = Math.random() * 100 + 'vw';
+                flor.style.fontSize = Math.random() * (30 - 15) + 15 + 'px';
+                const duracao = Math.random() * (6 - 4) + 4;
+                flor.style.animationDuration = duracao + 's';
+                
+                container.appendChild(flor);
+                setTimeout(() => { flor.remove(); }, duracao * 1000);
+            }, 250);
+        }
+    </script>
+</body>
+</html>
