@@ -256,13 +256,33 @@
     <div id="container-flores"></div>
 
     <script>
+        <script>
         let cliquesNoRegador = 0;
 
+        // Função melhorada com mecânica de desbloqueio de áudio pelo navegador
         function iniciarExperiencia() {
             const musica = document.getElementById('musica-fundo');
-            musica.play().catch(e => console.log("Áudio aguardando interação."));
+            
+            // Força o carregamento do arquivo de áudio
+            musica.load(); 
 
-            // Esconde a tela inicial e mostra APENAS a tela do jardim
+            // Tenta dar o play e captura se o navegador tentar bloquear
+            let tocando = musica.play();
+
+            if (tocando !== undefined) {
+                tocando.then(_ => {
+                    // Áudio começou a tocar perfeitamente!
+                    console.log("Música iniciada com sucesso.");
+                }).catch(error => {
+                    // Se o navegador bloqueou, tentamos uma segunda vez com o contexto limpo
+                    console.log("O navegador tentou bloquear o áudio, aplicando correção...");
+                    setTimeout(() => {
+                        musica.play();
+                    }, 100);
+                });
+            }
+
+            // Transição de telas
             document.getElementById('tela-inicial').classList.add('oculto');
             document.getElementById('tela-jardim').classList.remove('oculto');
         }
@@ -291,7 +311,6 @@
                 planta.innerText = "🌸";
                 planta.className = "estagio-Final";
                 
-                // Só agora esconde o jardim e revela a tela final das fotos
                 setTimeout(() => {
                     document.getElementById('tela-jardim').classList.add('oculto');
                     document.getElementById('tela-final').classList.remove('oculto');
@@ -324,6 +343,7 @@
                 setTimeout(() => { flor.remove(); }, duracao * 1000);
             }, 250);
         }
+    </script>
     </script>
 </body>
 </html>
